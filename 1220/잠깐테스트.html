@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<input type="text" id="myTxt" value="메롱">
+<script>
+
+// var check = document.querySelector("#myTxt").value; // call by value 복사(=오른쪽 값이 string원시타입)
+// check = "안메롱";   // text 안바뀜
+
+var check = document.querySelector("#myTxt"); // call by reference 참조
+check.value = "안메롱";   // text 바뀜
+
+/* 직접 id를 가져다 쓰는 코딩은 코딩양이 많아지면 심각하게
+   가독성을 훼손하므로, 짧은 샘플코드를 만들때만 사용
+myTxt.value = "요것도 되지용!!";
+*/
+
+//var ck = "";    // 문자열은 빈 공백을 제외한 모든게 true로 바뀜
+//var ck = 0;       // 숫자(number)는 오직 0만 false
+var ck = [];        // 객체는 무조건 true
+
+// 요즘 많이 쓰이는 스타일
+//var ck = true;
+/*
+var ck = !0;
+
+if(!ck) {    // 조건은 boolean 타입이어야 해서 안보이게 boolean으로 바뀜
+    alert("흥치피");
+} else {
+    alert("false라넹");
+}
+*/
+
+</script>

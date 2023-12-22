@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<style>
+    #myDrop {
+        width: 300px;
+        height: 300px;
+        border:2px solid pink;
+        overflow: auto;
+    }
+</style>
+<div id="myDrop" ondragover="f_over()" ondrop="f_drop()"></div>
+<script>
+const myDrop = document.querySelector("#myDrop");
+
+// dragover, drop 2개를 막아줘야 브라우저가 이미지 여는 걸 막을 수 있음
+function f_over() {
+    event.preventDefault(); // 이벤트를 막음 + 부모에게 이벤트 버블링 막는다.
+}
+
+// 파일 1개만 읽는 함수
+function f_readOne(pFile) {
+    var fileReader = new FileReader();  // 읽어주는 아저씨 생성. 얘도 비동기.
+    fileReader.readAsDataURL(pFile); // 읽으시오
+    fileReader.onload = function() {    // 다 읽었다면 결과를..
+        console.log(fileReader.result); // console에 찍어주시오
+
+        var myImg = document.createElement("img");
+        myImg.src = fileReader.result;
+        myImg.style.width = "47%";
+        myImg.style.height = "47%";
+
+        myDrop.appendChild(myImg);  // 문서에 추가
+        myDrop.scrollTo(0,myDrop.scrollHeight); // 스크롤바 끝으로 내리기
+    }
+}
+
+// 사용자가 마우스 버튼을 놓았을 때
+function f_drop() {
+    event.preventDefault();
+    console.log("체크:",event.dataTransfer.files);
+    var dragFiles = event.dataTransfer.files; // 일단 파일 1개만
+
+    /*
+        반복문 안에 비동기가 들어있어 머리 아프게 할땐
+        반복문 안에 내용을 함수로 처리하면 됨!★
+        왜!, 함수의 매개변수는 해당 함수 안에서만 존재해서
+        다른 것과 충돌나지 않음
+    */
+    for(var i=0; i<dragFiles.length; i++) {
+        f_readOne(dragFiles[i]);
+    }
+}
+
+window.addEventListener("dragover", f_over);
+window.addEventListener("drop", f_over);
+</script>

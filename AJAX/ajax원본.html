@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<button onclick="f_ajax()">아작스콜</button>
+<div id="disp"></div>
+<script>
+// ajax는 손에 달고 살아야 함!
+// 2000년대 초반 인터넷 사용의 급증(쇼핑몰 등 전자상거래 급증)
+// 더 빠른 성능의 대안 필요, 페이지의 일부분만 바꿀려고 해도, 전체 페이지를
+// 다시 읽는 불편함이 눈에 들어옴!
+// 그래서 ajax 등장! 개발자들이 비동기를 믿어주지 않음 (그런게 되겠엉? 말도 안돼)
+// 나만 죽어날거얌!, 2004년경에 구글이 구글맵, 구글메일 등에서 ajax를 성공적으로 시연
+// 요 뒤로 상황이 반전되어서, 아작스 못쓰면 개발자도 아니당!
+// AJAX Asynchronous JAvascript XML (비동기 자바스크립트 XML)
+// 비동기?(혼자는 못함, 일꾼 여럿이 동시에 작업진행)
+// 동기:순서대로, 비동기:작업들이 동시에 ex)카페주문, 진동벨... 각각 다른일 처리..
+
+/*
+var xhr = new XMLHttpRequest(); // 통신 대신 해줄 아저씨 생성
+// http://localhost:8272/jsstudy/AJAX/data.csv 서버쪽 위치 똑같아서 생략 가능하지만...
+// 전문가는 절대 경로를 사용!! 앞에 슬래쉬 붙이면 됨
+// true 비동기. 동기는 예를들어 공유자원 쓸 경우
+xhr.open("get", "/jsstudy/AJAX/data.csv", true);  // 시킬 일 지정
+
+// 일이 끝났는지, 어쩐지 상태를 알아야 함, 이벤트 등록
+xhr.onreadystatechange = function() {
+    // 상태값 0,1,2,3,4 가 있음, 중간 상태는 관심이 없고, 끝났는지만 관심!
+    if(xhr.readyState == 4 && xhr.status == 200) {   // 아저씨만 완료 && 아저씨가 받아 온 서버 응답코드. 양방 모두 OK
+       console.log("항상체크:", xhr.responseText);
+    }
+}
+
+xhr.send(); // 실행. 요거빼먹고 안된다고 하는 경우가 있음!
+*/
+
+// 아작스 변수를 전역변수로 사용하지 않는당. => 일꾼이 하나. 시킬일이 여러개면 문제..
+// 오직 한가지일만 시킨다?, 그런일은 프로그램에 없다고 보는 게 타당
+// 항상 함수안에서 지역변수로 활용하는게 포인트!★
+
+// get방식과 서버의 정적 파일만 가져오는 것까지만 햇음
+// post/put/delete와 서버의 동적결과 리턴은 아직 하지 않았음
+
+/*
+function f_check(pSet) {
+    console.log("체크!", pSet);
+}
+
+f_check({
+    "name":"로제",
+    "role":"메인보컬",
+    "company":"YG"
+});
+*/
+
+// DRY (Do not Repeat Yourself) 원칙. 반복하지 마라
+
+var $ = {}; // 네임스페이스용 빈 객체 생성
+
+// $객체의 메소드로 바꾼다.
+$.ajax = function(pConfig) {
+    var xhr = new XMLHttpRequest(); // 객체 생성
+    xhr.open(pConfig.method, pConfig.url, true);    // 시킬일 지정
+    xhr.onreadystatechange = function() {   // 이벤트 등록
+        if(xhr.readyState == 4 && xhr.status == 200) {  // 상태 분기
+            //alert("완전 메롱"); // 나중에 뜸(true)
+            //console.log("항상체크:", xhr.responseText); // 데이터 찍기
+            // 결과처리할 함수
+            if(pConfig.dataType == "json") {
+                pConfig.success(JSON.parse(xhr.responseText));    
+            } else {
+                pConfig.success(xhr.responseText);
+            }
+            // responseText(문자열)
+            // 다른언어끼리 알아듣는것 string. 실체를 보내는게 힘들어서 글자를 보낸다.
+            // 객체->string serialize
+            //     <-      unserialize
+            // 서버는 문자열로 던지기 때문에 클라이언트 쪽에서 dataType을 지정해서 해석
+        }
+    }
+    xhr.send(); // 실행
+}
+
+$.ajax({
+    method:"get",
+    url:"/jsstudy/AJAX/data.csv",
+    dataType:"text",
+    success: function(rslt) {
+        console.log("넘겨받은 결과는:",rslt);
+    }
+});
+
+$.ajax({
+    method:"get",
+    url:"/jsstudy/AJAX/data.json",
+    dataType:"json",
+    success: function(rslt) {
+        console.log("넘겨받은 결과는:",rslt);
+        // 넘겨받은 결과값으로 테이블을 후딱 만들어 보시오
+        var str = "<table border='1'>"
+        for(var i=0; i<rslt.length; i++) {
+            str += `
+                <tr>
+                    <td>${rslt[i].name}</td>
+                    <td>${rslt[i].age}</td>
+                    <td>${rslt[i].alias}</td>
+                </tr>
+            `;
+        }
+        str += "</table>";
+        document.querySelector("#disp").innerHTML = str;    // innerHTML은 메소드가 아니라 속성
+    }
+});
+
+/*
+f_ajax("get", "/jsstudy/AJAX/data.csv", function(pRslt) {
+    console.log("콜백함수", pRslt);
+});
+
+f_ajax("get", "/jsstudy/AJAX/data.json", function(pRslt) {
+    console.log("콜백함수", JSON.parse(pRslt));
+});
+*/
+
+//alert("메롱");  // 얘가 먼저뜸(true). 얘를 나중에 띄우고싶다면(순서대로) false(동기)를 쓰면 됨.
+// 비동기는 제어를 넘겨버림.
+
+// 나쁜 잔머리, 귀차니즘의 끝판왕!
+/*
+setTimeout(function() {
+    console.log("체킁", xhr.responseText, "한한한");
+}, 500);
+*/
+
+//console.log("체크", xhr.responseText, "한한한");  // 데이터 안나옴. 아저씨 일 시키고 내 일 하는거
+</script>

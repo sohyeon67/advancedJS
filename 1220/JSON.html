@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<div id="d1" style="color:yellow;background-color: black;">메롱</div>
+<form>
+    <input type="text" name="aaa" value="흥">
+    <input type="text" name="bbb" value="치">
+    <div>나는야 div</div>
+    <input type="checkbox" name="ccc" value="c" checked>
+    <input type="radio" name="ddd" value="d" checked>
+    <span>재밌넹!</span>
+    <button name="mybtn">호호</button>
+</form>
+<script>
+    var myForm = document.forms[0];
+
+    // form태그 안에 사용자 입력태그 요소들만 가진 속성
+    var elems = myForm.elements;    //★
+    for(var i=0; i<elems.length; i++) {
+        console.log(elems[i]);
+    }
+
+    /* 위와 같음
+    for(var elem of myForm) {
+        console.log("체크:", elem);
+    }
+    */
+
+
+
+    /* 객체 속성 뽑아낼 때 사용하면 좋은 for in 문
+    for(var attr in window) {
+        // 위에서 변수 선언 => window 객체에 속성 추가이므로 attr과 window.attr은 같은 값
+        console.log("window객체속성:", attr, window[attr]);
+    }
+    */
+
+    const d1 = document.querySelector("#d1");
+    //alert(d1.style["color"]);
+    //alert(d1.style["background-color"]);
+
+// JSON JavaScript Object Notation 자바스크립트 객체 표기법
+// XML(json땜시 망해가고 있음)은 언어당?, JSON은 언어당?
+// 데이터전송포맷에 거의 표준으로 json이 사용되고 있음
+// 이름, 나이, 별명  csv
+// 배트맨, 30, 흥
+
+/*
+var jsp = {
+    name:"홍길동",
+    skill:"jsp달인"
+}
+*/
+
+/*
+var jsp = {};   // new Object();
+jsp.name = "홍길동";
+jsp.skill = "jsp달인";
+*/
+
+/* 함수지향 같지만 실제로는 객체지향
+var merong = "허거덕";  // 전역변수 설정의 실제 의미는 window 객체에 속성추가
+//alert(window.merong);
+
+function huk() {    // 전역함수의 정의는 실제로는 window객체의 메소드 추가
+    alert("헉")
+}
+window.huk();
+*/
+
+// 배열식 접근법(연관배열이라고도 불림)을 이용한 속성추가, 엄청 중요!
+/*
+var jsp = {
+    [name]:"홍길동",
+    [skill]:"jsp달인"
+}
+*/
+
+//var 345h = "왜 안됨?";  // 특수문자는 _,$만 사용가능
+
+// 일반적으로 배열식 접근법보다 .점 접근법을 더 많이 쓰는 이유는
+// .점 접근법이 배열식 접근법보다 성능(속도)이 좋기 때문인데
+// 로직구현이 애매할 때는 배열식 접근법이 꼬옥 필요!
+var name = "이름";
+var alias = "별명";
+
+var jsp = {
+    [name]:"되지용",
+    [alias]:"E7E"
+};
+
+console.log("눈으로 확인:", jsp);
+
+</script>

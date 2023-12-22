@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+// 자바스크립트에서 함수는 그냥 달고 함께 살아야 하는 것, 중요하다 그런말 필요없음
+// function은 왜 쓰나용? 왜 써야만 하나용?
+// DRY원칙 (Do not Repeat Yourself) 반복하지 마라!
+
+var ppp = 1 + 2 + 4 - 9;    // 표현식 : 연산을 통해 최종 결과가 1개로 귀결
+
+// 표현식(expression)을 이용한 함수 선언, hoisting(호이스팅) 먹지 않음
+const f_fbi = function() {
+    //alert("나도 함수얌");
+    //return "홍길동";             // 함수 종료, 제어권을 넘긴다
+    //alert("저는 뜨나용?");
+
+    // return 뒤에 어떤 데이터타입이 와도 상관없음
+    return function f_msg(p_merong) {
+        alert(p_merong);
+        return; // 생략
+    }
+
+    return;                     // 쓰건 안쓰건 맨 끝에 return이 생략되어 있음
+}
+
+// 함수 호출
+alert(f_fbi()('길동홍')); // 길동홍, undefined
+
+/* 공식 함수 선언법, 호이스팅
+function f_fbi() {
+    alert("난 함수얌");
+}
+*/
+
+
+</script>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    // return에 어떤 데이터 타입을 써도 상관없듯이
+    // 함수의 매개변수도 어떤 데이터타입이 와도 상관없음
+    // callback 스타일은 현재 거의 모든 언어에서 간략하고 
+    // 가독성이 좋고, 플렉서블하다는 이유로 각광받고 있으니
+    // 꼭 눈이 따라갈 수 있을 정도는 해 놓아야 함!★
+
+    // 표현식을 이용하면 함수 이름없이(익명함수) 생성가능
+    // 즉각 실행함수
+    // 언제 쓰는가?, 초기화가 필요한 핵심코드를 블락으로 만들고 싶거나
+    // 한번의 연산 실행의 결과가 필요할 경우, 메모리 절약을 위해서
+    // 보통 자바스크립트 라이브러리들에 한번 이상 들어가 있음
+    // ()와 !를 이용해서 표현하는 것을 권장
+    !function(pPara) {
+        alert("메롱 " + pPara);
+    }("하지웅 하지원");
+
+    var names = ["김민채", "정소현", "강진석", "송시운"];
+
+    const $ = {};   // 빈 객체, 멋지게 namespace(자바로치면 package)용
+
+    $.each = function(pArr, pCallback) {
+        for(var i=0; i<pArr.length; i++) {  // 배열 돌리기
+            pCallback(i, pArr[i]);  // 매개변수로 넘어온 함수 호출!
+        }
+    }
+
+    // 함수 호출, 배열과 함수를 인수로 넘긴다.
+    // 콜백함수의 매개변수가 있다면 정의한다.
+    $.each(names, function(pIndex, pValue) {
+        // alert(`${pIndex} : ${pValue}`);
+    });
+
+    /*
+    const f_check2 = function(pCallback) {
+        pCallback();
+    }
+
+    // f_check2를 부르고 f_check2가 pCallback 함수를 불렀음. 함수의 매개변수로 쓰이면 콜백 함수.
+    f_check2(function() {
+        alert("보통 날 콜백함수라 불러용");
+    });
+    */
+
+    /*
+    pCallback = function() {
+        alert("보통 날 콜백함수라 불러용");
+    }
+    */
+
+    const f_check = function(pName) {
+        /*
+        var msg = "";
+        if(pName == "이건정") {
+            msg = "동네아저씨";
+        } else {
+            msg = "도시아저씨";
+        }
+        return msg;
+        */
+       
+        // return을 잘 쓰면 굳이 else가 필요하지 않다.
+        if(pName == "이건정") {
+            return "동네아저씨";
+        }
+        return "도시아저씨";
+    }
+
+    // alert(f_check("이건정"));
+    // alert(f_check("강민택"));
+</script>

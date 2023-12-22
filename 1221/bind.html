@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<button id="myBtn">눌러방</button>
+<script>
+// call, apply, bind★ 쓸 필요가 생기는 상황이 점점 더 늘어가고 있음!
+// 왜냐면 프론트에서 이젠 비지니스 로직까지 다 처리하는 경우가 늘어감!
+
+/* document.write 넘 길어 줄여쓰고 싶어 만듦
+const myPrint = function(pMsg) {
+    document.write(pMsg);
+}
+*/
+
+var myPrint = document.write.bind(document);
+// document.write만 쓰면 안됨. 불법 호출
+// 참조를 이용(함수는 객체), bind를 이용해 this를 window에서 document로 바꾼다.
+
+window.myPrint("<h1>나야 나!</h1>");   // window.이 생략되어 있음
+myPrint("<h1>넌 누구얌</h1>");
+
+var myBtn = document.querySelector("#myBtn");
+
+const f_click = function(pName) {
+    document.write("<h1>난 최고의 프로그래머당</h1>");
+    console.log("체크:", this);
+    // alert(`${pName} 안농 잘 지냈엉`);
+}
+// 이벤트 등록!
+// bind는 call하고 문법은 똑같음
+// bind는 내부적으로 매개변수가 들어간 함수를 만들고,
+// 그 함수의 포인터 FP (함수이름의 의미)를 되돌려줌
+myBtn.addEventListener("click", f_click.bind({name:"나 소현"},"정소현"));
+// f_click()이나 f_click.call으로 쓰면 함수가 바로 호출됨..
+
+</script>

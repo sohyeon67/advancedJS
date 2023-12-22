@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<style>
+    #grand {
+        position: relative;
+        left: 30px;
+        width: 400px;
+        height: 400px;
+        border: 3px solid gold;
+    }
+    #mom {
+        position: relative;
+        left: 70px;
+        width: 200px;
+        height: 200px;
+        border: 3px solid pink;
+    }
+    #me {
+        position: relative;
+        left: 50px;
+        width: 100px;
+        height: 100px;
+        border: 3px solid black;
+    }
+</style>
+<!-- action의 default값은 브라우저 주소 표시줄에 보이는 주소값 -->
+<!-- <form action="" onsubmit="return f_submit()"> -->
+<form action="" id="myForm">
+    <input type="text" name="sname" value="홍길동">
+    <input type="text" name="sage" value="20">
+    <button type="submit">전송</button>
+</form>
+<script>
+const myForm = document.querySelector("#myForm");
+
+// ajax쓸 때 많이 사용하는 방법
+myForm.addEventListener("submit", function() {
+    event.preventDefault(); // 그냥 submit built-in(이벤트막기) 막기
+    var sAge = document.forms[0].sage.value;
+    if(sAge > 30) {
+        alert("안돼용! 입장 불가!");
+        return; // 종료
+    }
+    myForm.submit();    // 전송 form의 submit 메소드 호출!
+})
+
+// true false를 이용한 전송/안 전송
+function f_submit() {
+    var sAge = document.forms[0].sage.value;
+    if(sAge > 30) {
+        alert("안돼용! 입장 불가!");
+        return false;
+    }
+    return true;
+}
+</script>
+
+<!-- 내가 넣지 않은 기능(누르면 네이버 이동) built-in -->
+<a href="#" onclick="f_href()">Neighbor</a><br>
+
+<button onclick="f_click1()">눌러방1</button>
+<button id="myBtn2">눌러방2</button>
+<button id="myBtn3">눌러방3</button>
+
+<div id="grand" onclick="f_grand()"> 할머니
+    <div id="mom" onclick="f_mom()"> 엄마
+        <div id="me" onclick="f_me()">나 서강민</div>
+    </div>
+</div>
+
+<script>
+function f_href() {
+    event.preventDefault(); // built-in 기능 막기
+    alert("민채는 LG냉장고!");
+}
+
+
+// 상위 객체(parent)에 이벤트가 전달되는 것을 이벤트 버블링이라 함
+function f_grand() {
+    alert("나 할미당");
+}
+function f_mom() {
+    event.stopPropagation();    // 이벤트 전파 막기!, 이벤트 캡처링(capture)
+    alert("나 엄마얌");
+}
+function f_me() {
+    event.stopPropagation();    // 이벤트 전파 막기!
+    alert("나 강민서");
+}
+
+// 이벤트 등록법 3가지, inline, on이벤트명, addEventListener
+const myBtn2 = document.querySelector("#myBtn2");
+const myBtn3 = document.querySelector("#myBtn3");
+
+// 등록법 2번, on이벤트명은 나중것이 앞에것을 덮어버림!!!★
+myBtn2.onclick = function() {
+    alert("나 최룡이얌");
+}
+myBtn2.onclick = function() {   // 얘가 실행됨
+    alert("전 민균이예용");
+}
+
+// 등록법 3번, 권장 방식!!!★ 각각 다 이벤트큐에 등록됨
+myBtn3.addEventListener("click", function() {
+    alert("김선욱 만만세");
+});
+myBtn3.addEventListener("click", function() {
+    alert("장낙훈 더 만만세");
+});
+myBtn3.addEventListener("click", function() {
+    alert("김영진 더더더 만만세");
+});
+
+// 등록법 1번
+const f_click1 = function() {
+    alert("난 일반적이얌!, 디버깅에 편리하징");
+}
+</script>

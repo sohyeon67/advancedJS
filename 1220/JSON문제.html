@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<div id="list"></div>
+<script>
+    var myList = document.querySelector("#list");
+
+    var members = [
+        {name:"최예원",pos:"level1"},
+        {name:"최성동",pos:"level3"},
+        {name:"김지호",pos:"level3"},
+        {name:"민지현",pos:"level2"},
+        {name:"한동욱",pos:"level3"},
+        {name:"강민택",pos:"level4"},
+    ];
+
+    var levels = {
+        "level1":"회장님",
+        "level2":"사장님",
+        "level3":"팀장님",
+        "level4":"팀원님"
+    }
+
+    var tblStr ="<table border=1>";
+        tblStr += "<tr><th>넘버</th><th>이름</th><th>직급</th></tr>";
+    for(var i=0; i<members.length; i++) {
+        var member = members[i];
+        tblStr += `<tr>
+                        <td>${i}</td>
+                        <td>${member.name}</td>
+                        <td>${levels[member.pos]}</td>
+                    </tr>`;
+    }
+    tblStr += "</table>";
+
+    myList.innerHTML = tblStr;
+
+
+</script>

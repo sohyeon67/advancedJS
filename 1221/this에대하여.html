@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+// this? 이것? 나? 대명사
+// call, apply, bind 란 함수 객체의 메소드를 추가로 제공!
+// 개발자가 직접 this를 강제 제어할 수 있게 해줘서 칭찬받음!
+
+var f_ck = function(pPara, pPara2) {
+    alert(pPara2);
+    console.log("체크:", this, "매개변수:", pPara); // ?
+}
+
+// let, const는 다른 언어와의 호환성때문에 만든 것이므로 var일때만 window.f_ck()호출됨.
+//f_ck()와 같다.
+//window.f_ck();
+
+var hcy = {name:"홍창용"};
+hcy.check = f_ck;   // 참조! 함수는 객체타입
+
+var kmc = {name:"민채",age:20,role:"드라마 여주인공"};
+hcy.check.call(kmc, "김민채", "안 졸려용");
+// apply는 call과 기능적으로는 완전히 똑같고
+// 단지 매개변수들을 꼭 배열에 담아서 1개로 넘겨줘야 함
+hcy.check.apply(kmc, ["김민채", "아우 졸려용"]);
+
+// 요따구론 못 쓰겠다! 나 힘들다!
+
+
+</script>

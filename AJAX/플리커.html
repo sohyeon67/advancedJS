@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<input type="text" id="schWord" value="">
+<button onclick="f_schImg()">찾기</button><br>
+<div id="disp"></div>
+<script>
+const myDisp = document.querySelector("#disp"); // 찾은 걸 또 찾지 않게!
+const mySchWord = document.querySelector("#schWord");
+
+const preURL = "https://www.flickr.com/services/feeds/photos_public.gne?tags=";
+const postURL = "&format=json";
+
+function f_schImg() {
+    var schURL = `${preURL}${mySchWord.value}${postURL}`;   // 검색어가 들어간 완성된 URL
+    var myScript = document.createElement("script");
+    myScript.src = schURL;
+    document.head.appendChild(myScript);
+}
+
+// 불리는 함수를 미리 만들어둠(그래야 불리니까)
+function jsonFlickrFeed(pData) {
+    console.log("체크:", pData);    // 잘 넘겨 받을까?
+    var imgArr = pData.items;
+    myDisp.innerHTML = "";  // id=list에 있는거 지우기
+
+    for(var i=0; i<imgArr.length; i++) {
+        var imgURL = imgArr[i].media.m;
+        console.log("또 체크:",imgURL);
+
+        var img = document.createElement("img"); // img 태그 생성(메모리에)
+        img.src = imgURL; // 속성
+
+        myDisp.appendChild(img);    // div에 img
+    }
+}
+</script>
+<!-- 돌아오는 내용이 스크립트에 들어감! -->
+<script src="https://www.flickr.com/services/feeds/photos_public.gne?tags=dog&format=json"></script>

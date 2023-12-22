@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+// var, let, const의 차이 (let, const는 나중에 추가됨)
+// var가 특별하고, let과 const는 다른 언어와 호환성이 있음
+
+// let은 {}로 그 영역이 제한됨
+// var는 function 키워드로 그 영역이 제한됨
+
+// 원시타입(primative) vs 참조타입(object) 절대 알아야 함
+// 원시타입 number, string, boolean => undefined, null 등은 버립시다
+// 참조(reference)타입은 객체(배열포함)
+
+/* call by value 원시타입인 경우의 동작, 복사
+var aaa = 272;
+var bbb = aaa;
+
+
+bbb = 337;
+alert(aaa); // 272
+*/
+
+/*
+var ccc = {name:"로제"};
+var ddd = ccc;  // 오른쪽이 객체인 경우 왼쪽은 그냥 별명이라 생각하면 맘편함
+ddd.name="제니";
+
+alert(ccc.name);    // 제니
+*/
+
+/*
+const aaa = "흥";
+aaa = "치"; // error
+*/
+
+
+const black = {
+    name: "블랙",
+    role: "첩보원"
+}
+
+black.role = "개발자";  // OK 내용(속성)은 바꿀 수 있으나
+black = {name:"홍길동"};    // error. 객체 자체는 바꿀 수 없음!
+
+
+for(let i=1; i<=10; i++) {
+}
+//alert("i="+i);  // error
+</script>
