@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script src="./jsp.js"></script>
+<script>
+    // 넘어온 값 처리
+    // location 주소표시줄 객체, href 주소표시줄의 값
+    var curURL = location.href;
+    var queryString = curURL.split("?")[1];    // 원시타입에 쩜을 찍는 순간 내부적으로
+                                            // Wrapper String으로 바뀌어 메소드나 속성을 쓸 수 있음
+
+    var tblName = "myGesi"; // 로컬스토리지 키값, 테이블 저장형태는 배열이 되어야 함
+
+    var datas = localStorage.getItem(tblName);
+    var pid = 1;    // 디폴트값 1
+    if(!datas) {    // 데이터가 아예 없는 경우, 첫 글이 저장되는 경우
+        datas = []; // 빈 배열
+    } else {
+        datas = JSON.parse(datas);  // 배열 문자열을 실제 배열로
+        pid = datas[datas.length-1].pid + 1;
+    }
+
+    var title = request.getParameter("n_title");
+    var writer = request.getParameter("n_writer");
+    var skills = request.getParameter("n_skill");
+    var cont = request.getParameter("n_cont");
+
+    // 넘어온 내용을 덩어리(객체)로 만들기
+
+    var newGul = {
+        pid,        // 고유값
+        title,      // key값과 key할당할 값의 변수명이 동일할 때 생략가능
+        writer,
+        skills,
+        cont
+    }
+
+    datas.push(newGul); // 배열에 추가
+
+    // 로컬스토리지에 문자열화(시리얼라이즈)해서 저장
+    localStorage.setItem(tblName, JSON.stringify(datas));
+    console.log("눈으로 체크:", newGul);
+
+    alert("그리 그리 잘 저장되었어용"); // 사용자를 위해 억지 메시지 한개
+
+    location.href = "list.html";        // 리스트 페이지로 이동, 브라우저 캐시를 이용할 수도 있음.
+    //location.replace("list.html");      // 리스트 페이지로 이동, 꼭 서버에 새로 요청을 보냄!
+
+</script>

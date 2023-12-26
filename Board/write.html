@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>엉터리 게시판</title>
+</head>
+<body>
+    <h1>못생겼지만 중요한 게시판</h1>
+    <form action="write_action.html" method="get">
+        제목 : <input type="text" name="n_title" value="" required><br>
+        글쓴이 : <input type="text" name="n_writer" value="" required><br>
+        <hr>
+        스킬<br>
+        JS<input type="checkbox" name="n_skill" value="js">
+        JAVA<input type="checkbox" name="n_skill" value="java">
+        SPRING<input type="checkbox" name="n_skill" value="spring" checked>
+        CSS<input type="checkbox" name="n_skill" value="css">
+        ORACLE<input type="checkbox" name="n_skill" value="oracle"><br>
+        내용<br>
+        <textarea name="n_cont" id="" cols="30" rows="10" required></textarea><br>
+
+        <input type="submit" value="쓰기">
+    </form>
+</body>
+</html>

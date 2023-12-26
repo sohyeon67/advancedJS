@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+// localStorage에 객체 데이터가 있을 때 수정
+
+var testObj2 = {
+    name:"홍창용",
+    age: 30
+}
+
+localStorage.setItem("hcy", JSON.stringify(testObj2));
+
+// 먼저 꺼내기
+console.log(JSON.parse(localStorage.getItem("hcy")));
+var readHCY = JSON.parse(localStorage.getItem("hcy"));  // HDD -> Memory로 읽어옴
+// 수정
+readHCY.age = 25;   // 메모리 상에서 바뀐 것
+// 문자열 덮어쓰기
+localStorage.setItem("hcy", JSON.stringify(readHCY));   // Memory -> HDD
+
+/*
+    // JSON 유틸에는 쪼메 문제가 있는데, 요청을 해도 우선순위가 낮다고 안 고쳐줌!
+    // 문자열로 할 땐, 바깥쪽이 싱글따옴표, key(속성)에도 꼭 쌍 따옴표를 붙여야 함!
+    var testStr = '{"name":"시운송","present":"맛난떡"}';
+//    console.log(testStr);
+    var testObj = JSON.parse(testStr);
+    console.log("눈으로 확인:", testObj);
+*/
+
+    // 크롬 기준 사이트별로 약 5M의 저장용량, cookie는 최대 1K
+/*
+    localStorage.이름 = "전 민균";  //localStorage.setItem("이름", "전 민균")
+    delete localStorage.이름;   // 속성 자체를 지움
+
+    localStorage.setItem("누구얌?", "지현민");  // 쓰기
+    localStorage.setItem("무슨요일", "화요일"); // 쓰기
+    alert(localStorage.length);     // 저장된 key-value 세트 갯수
+
+    localStorage.setItem("누구얌?", "소현정");  // 누구얌? 을 덮어씀
+    alert(localStorage.getItem("누구얌?")); // 읽기
+    localStorage.removeItem("누구얌?");      // 지우기
+    alert(localStorage.key(0));             // 첫번째의 key값 읽어오기.
+    //localStorage.clear();                   // 전부 지우기!
+
+    // 제약사항 -> 머릿속에 꼬옥 넣어야 함!
+    var myStar = {
+        group:"에스파",
+        fan:"전민균"
+    };
+
+    var myArr = ["카리나", "카리나2", "칼있나?"];
+
+    //alert("체크:"+myStar);  // toString() : [object Object]
+    alert("체크:"+myArr);    // 배열은 toString()이 콤마로 연결됨
+
+    localStorage.setItem("에스파", JSON.stringify(myArr));  
+    localStorage.setItem("나의스타", JSON.stringify(myStar));   // 객체를 문자열화
+
+    // sessionStorage => localStorage와 사용법이 완전히 같지만, 
+    //                   사이트를 벗어나면 자동으로 삭제되는 점이 다름
+*/
+</script>

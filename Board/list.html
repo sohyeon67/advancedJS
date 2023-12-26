@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>못생긴 게시판</h1>
+    <div id="list"></div>
+<script>
+    function f_over(pThis) {
+        pThis.style.backgroundColor = "pink";
+    }
+    function f_out(pThis) {
+        pThis.style.backgroundColor = "white";
+    }
+
+    const myList = document.querySelector("#list");
+    const tblName = "myGesi";
+    var gulList = JSON.parse(localStorage.getItem(tblName));    // 배열
+
+    var tblStr = "<table border=1>";
+        tblStr += "<tr><th>PID</th><th>제목</th><th>글쓴이</th><th>스킬</th></tr>";
+    
+    for(var i=0; i<gulList.length; i++) {
+        var gul = gulList[i];
+        tblStr += `
+                    <tr onmouseover=f_over(this) onmouseout=f_out(this)>
+                        <td>${gul.pid}</td>
+                        <td>${gul.title}</td>
+                        <td>${gul.writer}</td>
+                        <td>${gul.skills}</td>
+                    </tr>
+        `;
+    }
+    tblStr += "</table>";
+    tblStr += "<br><a href=write.html>글쓰기</a>";  // 글쓰기로 가는 a 링크 괜히 넣기
+    myList.innerHTML = tblStr;
+
+</script>
+</body>
+</html>
