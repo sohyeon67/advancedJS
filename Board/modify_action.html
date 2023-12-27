@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script src="./jsp.js"></script>
+<script>
+// 넘어온 값들
+var pid = request.getParameter("n_pid");
+var title = request.getParameter("n_title");
+var writer = request.getParameter("n_writer");
+var cont = request.getParameter("n_cont");
+var skills = request.getParameterValues("n_skill");
+
+var gulList = JSON.parse(localStorage.getItem("myGesi"));
+
+// 수정하려는 글 찾기
+for(var gul of gulList) {
+    if(gul.pid == pid) {    // 찾았당
+        gul.title = title;      // 덮어쓰기
+        gul.writer = writer;
+        gul.cont = cont;
+        gul.skills = skills;
+        break;  // 더 할 필요없음!
+    }
+}
+
+// 바꾼걸 다시 저장(localStorage 덮어쓰기)
+localStorage.setItem("myGesi", JSON.stringify(gulList));
+
+alert("그리 잘 수정 되었을 거예용!!");
+
+location.href = "list.html";    // 리스트로 페이지 돌리기
+
+</script>

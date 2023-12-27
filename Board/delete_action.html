@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script src="./jsp.js"></script>
+<script>
+    var pid = request.getParameter("n_pid");
+
+    var gulList = JSON.parse(localStorage.getItem("myGesi"));
+
+    for(var i=0; i<gulList.length; i++) {
+        var gul = gulList[i];
+        if(gul.pid == pid) {    // 찾았당
+            gulList.splice(i, 1);   // 배열에서 요소 지우기
+            break;  // 요걸 빼먹는 경우가 많음! 성능 저하를 일으킴
+        }
+    }
+
+    localStorage.setItem("myGesi", JSON.stringify(gulList));
+
+    alert("원래 프로그램 세계에서는 지운척만 한답니당");
+
+    location.href = "list.html";
+    
+</script>

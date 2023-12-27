@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    // 더미 데이터 만들기
+
+    function ranSkill() {
+        var skills = ["js", "java", "spring", "css", "oracle"];
+        
+        var ranLoop = Math.ceil(Math.random()*3);
+        for(var i=1; i<ranLoop; i++) {
+            var ranInx = Math.floor(Math.random()*skills.length);
+            skills.splice(ranInx, 1);   // ranInx부터 1개를 지워랑!
+        }
+
+        return skills;
+    }
+
+    var ranArr = [];
+    for(var i=1; i<=108; i++) {
+        var newGul = {
+            pid: i,
+            title: "제목"+i,
+            writer: "에스파"+i,
+            skills: ranSkill(),
+            cont: "내용"+i
+        };
+        console.log("체크:", newGul);
+        ranArr.push(newGul);
+        localStorage.setItem("myGesi", JSON.stringify(ranArr));
+    }
+</script>

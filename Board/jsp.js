@@ -15,6 +15,11 @@ var request = {};   // 네임스페이스용 빈 객체, 사용자요청을 처�
 
 // 좀 더 정갈하고 의미있게, 1개만 넘어오는 값
 request.getParameter = function(pName) {
+
+    // 주소 표시줄에 ?가 없다면(찾을 수 없다면)
+    if(location.href.indexOf("?") == -1) return null;
+
+    var queryString = location.href.split("?")[1];
     // n_title=merong&n_writer=hello&n_skill=js&n_skill=spring&n_cont=dd
     var items = queryString.split("&"); // 배열
     for(var i=0; i<items.length; i++) {
@@ -28,6 +33,11 @@ request.getParameter = function(pName) {
 
 // 여러개 넘어오는 값
 request.getParameterValues = function(pName) {
+    // 주소 표시줄에 ?가 없다면(찾을 수 없다면)
+    if(location.href.indexOf("?") == -1) return null;
+
+    var queryString = location.href.split("?")[1];
+
     var schRslt = [];   // 찾은 걸 담을 빈 배열
     var items = queryString.split("&"); // 배열
     for(var i=0; i<items.length; i++) {

@@ -21,7 +21,7 @@
 
     var title = request.getParameter("n_title");
     var writer = request.getParameter("n_writer");
-    var skills = request.getParameter("n_skill");
+    var skills = request.getParameterValues("n_skill");
     var cont = request.getParameter("n_cont");
 
     // 넘어온 내용을 덩어리(객체)로 만들기

@@ -3,11 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+<script src="./jsp.js"></script>
+<style>
+    .active {
+        color: red;
+        font-size: 2em;    /* 2배 */
+    }
+</style>
+<style>
+    /* 모달 메인창 */
+    #myModal {
+        position: fixed;
+        width: 100%; height: 100%;   /* fixed인 경우 먹음 */
+        left: 0px; top: 0px;
+        background-color: rgba(0,0,255,0.7);
+        display: none;  /* 보이지 않고 영역도 차지하지 않음 */
+        z-index: 1000;  /* 상황에 맞추어 사용, 큰 숫자가 앞으로 나옴 */
+        /* 
+            position 속성값
+            static(브라우저에게 외주. 알아서 배치하라 함), 
+            relative(static한 상태에서 내가 쪼금 조정할게),
+            absolute(내가 다 할게 브라우저 넌 손 떼, 기준점 : 브라우저 왼쪽상단 모서리),
+            fixed(고정좌표. 모달을 만들때 사용할거임. 뒤에 것 클릭도 못하게 막을 것.)
+            ★★ 부모 relative, 자식 absolute (자식의 기준점이 부모 왼쪽상단 모서리)
+        */
+    }
+
+    /* 모달 속 내용창 */
+    #myCont {
+        width: 60%;
+        height: 70%;
+        margin: 20% auto;   /* 수평가운데 정렬 */
+        background-color: blueviolet;
+        color: white;
+    }
+</style>
 </head>
 <body>
+     <!-- ★★나만의 모달★★ -->
+     <div id="myModal">
+        <div id="myCont">
+            <form action="" method="get">
+                <!-- 사용자에게는 보여 줄 필요가 없지만, 프로그램상 필요 -->
+                <input type="hidden" name="n_pid" value="">
+                제목 : <input type="text" name="n_title" value=""><br>
+                <!-- disabled는 서버로 전송이 안되고, readonly는 전송이 됨 주의! -->
+                글쓴이 : <input type="text" name="n_writer" value="" readonly><br>
+                <hr>
+                스킬<br>
+                JS<input type="checkbox" name="n_skill" value="js">
+                JAVA<input type="checkbox" name="n_skill" value="java">
+                SPRING<input type="checkbox" name="n_skill" value="spring">
+                CSS<input type="checkbox" name="n_skill" value="css">
+                ORACLE<input type="checkbox" name="n_skill" value="oracle"><br>
+                내용<br>
+                <textarea name="n_cont" id="" cols="30" rows="10" required></textarea><br>
+                <input type="button" value="X" onclick="f_modalClose()">
+                <button type="button" onclick="f_modify()">수정</button>
+                <button type="button" onclick="f_del()">삭제</button>
+            </form>
+        </div>
+    </div>
+
     <h1>못생긴 게시판</h1>
     <div id="list"></div>
 <script>
+    function f_modify() {
+        myForm.action = "modify_action.html";
+        myForm.submit();    // 전송
+    }
+
+    function f_del() {
+        myForm.action = "delete_action.html";
+        myForm.submit();    // 전송
+    }
+
+    const myModal = document.querySelector("#myModal");
+    const myForm = document.forms[0];
+
+    function f_modalOpen() {
+        myModal.style.display = "block";    // 보이게
+    }
+    function f_modalClose() {
+        myModal.style.display = "none";    // 안보이게
+    }
+
+    // 전역변수
+    // 전역함수
+    // 이 페이지에 해당 플로우
+
+    // 해당 글 제목 클릭 a태그
+    function f_readGul(pId) {
+        event.preventDefault(); // a태그 href로 가는 기능 막기
+
+        // pId에 해당하는 글 찾기
+        for(var schGul of gulList) {
+            //console.log("체크:", schGul);
+            if(schGul.pid == pId) { // 같다면 찾는 글 맞음
+                console.log("찾았당:", schGul);
+                myForm.n_pid.value = schGul.pid;    // hidden에 숨겨놓기
+                myForm.n_title.value = schGul.title.replaceAll("+", " ");
+                myForm.n_writer.value = schGul.writer;
+                myForm.n_cont.value = schGul.cont.replaceAll("+", " "); // 사실 요기서 하는 건 좋지 않음
+
+                // 체크박스 체크 구현
+                // 체크박스 전체 클리어
+                var ckBoxes = document.querySelectorAll("input[type=checkbox]");
+                for(var ckBox of ckBoxes) {
+                    ckBox.checked = false;
+                }
+                // 필요한 것만 체크
+                for(var ckVal of schGul.skills) {   // skills는 배열
+                    document.querySelector(`[type=checkbox][value=${ckVal}]`).checked = true;
+                }
+
+                f_modalOpen();
+                break;  // 더이상 찾을 필요 없음, 1개니까
+            }
+        }
+    }
+
     function f_over(pThis) {
         pThis.style.backgroundColor = "pink";
     }
@@ -19,21 +134,65 @@
     const tblName = "myGesi";
     var gulList = JSON.parse(localStorage.getItem(tblName));    // 배열
 
-    var tblStr = "<table border=1>";
-        tblStr += "<tr><th>PID</th><th>제목</th><th>글쓴이</th><th>스킬</th></tr>";
+    // 정렬. pid 순으로 뒤집기
+    gulList.sort(function(a, b) {
+        return b.pid - a.pid;
+    })
+
+    /*
+        페이지 나누기 산수임!
+        전체 글 수
+        한 페이지당 글 몇 개
+        현재 페이지
+        페이지 수
+    */
+
+    var pagePerGul = 10;            // 한 페이지당 글 수
+    var totalGul = gulList.length;  // 전체 글 수
+    var totalPage = Math.ceil(totalGul / pagePerGul);  // 페이지 수. 나머지가 있으면 무조건 1페이지 더 있음
     
-    for(var i=0; i<gulList.length; i++) {
+    var curPage = 1;    // 현재 페이지. 일단 디폴트로 첫 페이지
+    if(request.getParameter("page")) {  // 넘어온 값이 있다면
+        curPage = request.getParameter("page"); // 그 값으로 세팅
+    };
+    
+    var startIndex = (curPage - 1) * pagePerGul;    // 0, 10, 20, 30
+    var endIndex = startIndex + pagePerGul; // for문 조건에 따라 -1
+
+    // 마지막 페이지는 항상 10개라고 볼 수 없음. 1개만 있을 수도 있음
+    if(endIndex > gulList.length) { // 배열의 마지막 index보다 크다면, 그건 없으니까
+        endIndex = gulList.length;    // endIndex를 배열의 마지막 index값으로 바꾸어줌!
+    }
+
+    var tblStr = "<table border=1>";
+        tblStr += `<tr><th>PID</th><th>제목</th><th>글쓴이</th><th>스킬</th>
+            <th>삭제</th><th><button>선택삭제</button></th></tr>`;
+    
+    for(var i=startIndex; i<endIndex; i++) {
+        //console.log("체크:", i);
         var gul = gulList[i];
         tblStr += `
                     <tr onmouseover=f_over(this) onmouseout=f_out(this)>
                         <td>${gul.pid}</td>
-                        <td>${gul.title}</td>
+                        <td><a href="#" onclick="f_readGul(${gul.pid})">${gul.title}</a></td>
                         <td>${gul.writer}</td>
                         <td>${gul.skills}</td>
+                        <td><button>삭제</button></td>
+                        <td><input type="checkbox" name="n_del" value=""></td>
                     </tr>
         `;
     }
-    tblStr += "</table>";
+    tblStr += "</table><br>";
+
+    // 페이지 리스트 출력
+    for(var i=1; i<=totalPage; i++) {
+        if(curPage == i) {
+            tblStr += `<a class="active" href="list.html?page=${i}">${i}</a>&nbsp;&nbsp;&nbsp;`;
+        } else {
+            tblStr += `<a href="list.html?page=${i}">${i}</a>&nbsp;&nbsp;&nbsp;`;
+        }
+    }
+
     tblStr += "<br><a href=write.html>글쓰기</a>";  // 글쓰기로 가는 a 링크 괜히 넣기
     myList.innerHTML = tblStr;
 
