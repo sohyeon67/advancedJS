@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    // 자바의 ArrayList 만들어 보기
+    function ArrayList() {
+        this.length = 0;
+        return this;    // new를 써서 생성되는 것은 이것이 생략되어 있음! 객체를 생성해 돌려줌
+    }
+
+    // ArrayList의 add 메소드
+    ArrayList.prototype.add = function(pArg) {
+        this[this.length] = pArg;   // 배열식 접근법. 배열처럼 사용되었음. 인덱스가 아니고 속성임.
+        this.length++;
+        // return; // 일반메소드는 return;이 생략. undefined
+        return this;    // 메소드 체이닝 완성! 이미 만들어진 애 돌려줌
+    }
+
+    // 읽기
+    ArrayList.prototype.get = function(pIndex) {
+        return this[pIndex];    // 보통 읽기 동작에는 메소드 체이닝을 구현하지 않음!
+    }
+
+    // 덮어쓰기
+    ArrayList.prototype.set = function(pIndex, pVal) {
+        this[pIndex] = pVal;
+        return this;
+    }
+
+    ArrayList.prototype.size = function() {
+        return this.length;
+    }
+
+    // 인덱스 속성을 순서대로 정비할 필요가 생김
+    // 중간이 비면 반복문
+    ArrayList.prototype.remove = function(pIndex) {
+
+        if(pIndex > this.size()-1) {
+            return;
+        }
+
+        // 자리 옮기기
+        for(var i=pIndex; i<this.size()-1; i++) {
+            var a = this[i];
+            this[i] = this[i+1];
+            this[i+1] = a;
+
+            console.log("확인", structuredClone(this));
+        }
+
+        delete this[this.length-1];    // 객체에서 속성을 완전히 제거
+        this.length--;      // 길이 1 감소
+
+        return this;    // 메소드 체이닝
+    }
+
+    var myList = new ArrayList();
+    // ★디버깅(참조변수 출력시)★에 사용하면, 아주 유용한 전역함수 structuredClone()
+    // 객체를 복사한 것을 찍음.
+    console.log(structuredClone(myList));
+
+    // 메소드 체이닝을 쓰고싶당!
+    myList.add("민지현").add("한동욱").add("김영진").add("정소현").add("김민채");
+    // myList.add("한동욱");
+    
+    console.log(structuredClone(myList));
+
+    myList.remove(1);
+    console.log(structuredClone(myList));
+
+</script>

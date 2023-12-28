@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+<style>
+    #list {
+        height: 300px;  /* 높이를 제한 */
+        border: 1px solid black;
+        overflow: auto;
+    }
+</style>
+</head>
+<body>
+    <h1>DIV에 무한스크롤 걸기</h1>
+    <div id="list">
+        <h1>난 최고의 개발자당 안 졸리당!</h1>
+        <h1>난 최고의 개발자당 안 졸리당!</h1>
+        <h1>난 최고의 개발자당 안 졸리당!</h1>
+        <h1>난 최고의 개발자당 안 졸리당!</h1>
+        <h1>난 최고의 개발자당 안 졸리당!</h1>
+        <h1>난 최고의 개발자당 안 졸리당!</h1>
+    </div>
+<script>
+    var myList = document.querySelector("#list");
+
+    myList.scrollTo(0,0);   // 스크롤바 이동! 타이머 필요 없음
+
+    function f_scroll() {
+        var scrollTop = myList.scrollTop;
+        var clientHeight = myList.clientHeight;
+        var scrollHeight = myList.scrollHeight;
+
+        var tunningVal = 50;
+
+        if((scrollTop + clientHeight) >= (scrollHeight - tunningVal)) {
+            // 요기에 못생긴 게시판 10개씩 가져오기 해보면 아주 좋음!
+
+            for(var i=1; i<=6; i++) {
+                var htag = document.createElement("h"+i);
+                htag.innerHTML = "무한스크롤";
+                myList.appendChild(htag);
+            }
+        }
+    }
+
+    myList.addEventListener("scroll", f_scroll);
+</script>
+</body>
+</html>

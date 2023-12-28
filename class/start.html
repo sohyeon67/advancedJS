@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+// 자바스크립트에도 class 키워드가 추가됨!
+// 하지만 원래 function 키워드가 하던 일이고, 내부적으로 function 키워드로 바뀌어
+// 처리된다는 말에 순수 자바스크립트(바닐라)에선 그냥 function 키워드를 더 많이 씀!
+// 만약 마이크로소프트의 typescript를 쓴다면 이야기가 다름(class 키워드를 써야 유리)
+
+// function 키워드를 class의 의미로 사용하기
+// (중요, 연봉도 오르고, 최신 프론트 프레임워크 사용에 남들보다 빨리 진출)
+function Saram(pName, pAge) {  // 생성자(constructor)라고도 부름
+    this.name = pName;
+    this.age = pAge;
+    /* 메소드를 이렇게 만들면 각자 메소드를 가짐, 상황에 따라 메모리 낭비라고도 볼 수 있음
+    this.getAge = function() {
+        return this.age;
+    }
+    */
+    return this;    // 요것이 생략되어 있음, 그냥 function으로 쓸 때와 차이?
+}
+
+// ★★★메소드 선언은 명시적으로 prototype에 넣어주어야
+// 해당 class에서 생성된 객체끼리 공유됨
+Saram.prototype.getAge = function() {   /* 이걸 받아들이면 이야기가 많이 쉬워짐 */
+    return this.age;
+}
+
+
+var 송시운 = new Saram("시운", 20);   // new로 불러서 쓸 때는 class로 사용
+console.log(송시운);
+console.log(송시운.getAge());
+
+
+var 강민택 = new Saram("민택", 25);
+console.log(강민택);
+console.log(강민택.getAge());
+
+</script>
