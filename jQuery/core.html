@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<body>
+    <div class="mch">민채 헤어스타일 고침1</div>
+    <div class="mch">민채 헤어스타일 고침2</div>
+    <div class="mch">민채 헤어스타일 고침3</div>
+    <div class="mch">민채 헤어스타일 고침4</div>
+</body>
+<script>
+// jQuery는 잊혀져 가지만, jQuery가 남긴
+// callback Style은 시대를 지배하고, 확장해 가고 있음!
+// 핵심은 자신의 객체에 옮겨 담는 것, 왜? 자유롭게 기능 추가하기 위해서
+// 문법에 일관성을 부여해서, 사용하기 쉽게 하는 게 목표였음!
+// 유지보수(SM) 때문에 알긴 알아야 함!(완전히 사라지는 데는 시간이 많이 필요)
+// 좋은 플러그인들이 아직은 너무 많음
+
+// jQuery팀은 핵심코드를 영역화해서 지키고 싶음
+// 즉각 실행 함수를 이용!
+// 일반적으로 사용하진 않지만, 라이브러리를 만들때 핵심 시작코드가 들어있음
+// var $;   // 이건 의도와 안 맞게 쫌 없어보임
+(function() {
+    // 괜히 new를 없애주면 편하게 쓸 것 같음!
+    var $ = function(pSel) {
+        return new myDom(pSel);
+    }
+
+    // class로 쓸 myDom
+    function myDom(pSel) {
+        var elems = document.querySelectorAll(pSel);
+        // 자기 속성으로 옮겨담기
+        this.length = elems.length; // length 속성 지정
+        for(let i=0; i<this.length; i++) {  // 옮겨담기, 배열식 접근법
+            this[i] = elems[i];
+        }
+
+        return this;    // 생략가능, class의 의미로 쓰는 function키워드는 요것이 생략되어 있음
+    }
+
+    // 아래 형식으로만 메소드(jQuery 플러그인)를 추가해야만 한다면
+    // 너무 제한적이고, 관리가 힘들어짐!, prototype은 바깥으로 빼주면 좋음!
+    // myDom.prototype.함수명 = function() {};
+
+    // 전역변수 $와 지역변수 $를 연결시킴(참조)
+    window.$ = $;   // 자주 보면, 맘이 편함
+    $.fn = myDom.prototype; // myDom.prototype을 즉각실행함수 바깥에서 $.fn으로 접촉 가능(참조)
+}) ();
+
+//console.log("체크:", $.fn);
+
+$.fn.eq = function(pIndex) {
+    return this[pIndex];
+}
+
+// 자주 쓰는 메소드 html, innerHTML 속성을 제어
+// JS에 오버로딩(overloading)?, 오버로딩이 없는 관계로 매개변수 개수만 중요하고
+// 타입은 실행시(run)에 테스트해서 분리 처리해야 함
+// 읽기(매개변수없는거)/전체쓰기(매개변수 있는거)/부분제어(매개변수가 콜백)
+$.fn.html = function(pArg) {
+    // 매개변수 값이 없을 때(undefined), 무조건 첫번째 dom의 innerHTML값을 리턴
+    if(!pArg) {
+        return this[0].innerHTML;
+    }
+
+    // 매개변수 값이 문자열일 때 전체 쓰기
+    if(typeof(pArg) == "string") {
+        for(var i=0; i<this.length; i++) {
+            this[i].innerHTML = pArg;
+        }
+        return; // 일단 끝내기
+    }
+
+    // 부분 제어는 매개변수로 함수(요것이 콜백함수)가 넘어왔을 때
+    if(typeof(pArg) == "function") {
+        for(var i=0; i<this.length; i++) {
+            // pArg(i, this[i].innerHTML, this[i]);
+            // pArg.call(this[i], i, this[i].innerHTML);   // this가 가리키는 값을 직접 제어(개별 요소를 가리키도록)
+            this[i].innerHTML = pArg.call(this[i], i, this[i].innerHTML);   // 콜백함수의 리턴값을 활용
+        }
+        return; // 일단 종료
+    }
+
+}
+
+// var myMC = new myDom(".mch");
+var myMC3 = $(".mch");
+
+// myMC3.html(function(pIndex, pHTML, pDOM) {  // 익명함수, this를 찍으면 Window. pDOM은 쫌 없어보임
+// this를 제어해서 편하게 쓸 수 있게 하기
+myMC3.html(function(pIndex, pHTML) {
+    console.log("this는", this);
+    // console.log("일단 체크:", pIndex, pHTML, pDOM);
+    if(pIndex == 1) {
+        // myMC3[pIndex].innerHTML = "<h1>메롱</h1>";
+        // pDOM.innerHTML = "<h1>민채 멋졍!!</h1>";
+        // this.innerHTML = "<h1>민채는 연기대상!</h1>";
+        return "<h1>민채 만만세</h1>";
+    }
+    return pHTML; // 안바꾼 애들은 원래 값 리턴해주기! 안그러면 return;돼서 undefined
+});
+
+/*
+console.log("항상 눈으로 체크3:", myMC3.eq(2));
+console.log("항상 눈으로 읽기:", myMC3.html());
+myMC3.html("<h1>새해 복 많이 받기</h1>");
+*/
+</script>
