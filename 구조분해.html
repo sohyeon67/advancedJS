@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    // destructure (구조분해)
+    // 프론트 프레임워크에서 특히 아주 많이 사용됨!
+    // 별거 아님!
+
+    // 익스플로러11에서 쓰면 안댐
+    let myArr = ["흥", "치", "피"];
+    [aaa,,bbb] = myArr; // 배열에서 뽑아오기 ,,중간꺼 안받음
+    //alert(aaa);   // 첫번째 꺼
+    //alert(bbb);   // 세번째 꺼
+    [,...sec] = myArr;  // ...은 Spread Operator(전개 연산자)라 불림.
+    //alert(sec);   // 두번째부터
+    let ccc = ["흥", "치", "피"];
+    let ddd = ["헉", "퍽", "픽"];
+    let hap = [...ccc, ...ddd, "메롱 안 졸려"]; // 배열 ccc, ddd 합치깅★
+    //alert(hap);
+
+    function fCheck(p1, p2, ...all) {   // p1,p2는 필수, 나머지는 옵션일 때
+        console.log("체크:", all);
+        //alert(all[2]);  // 요
+    }
+
+    fCheck("안", "녕", "하", "세", "요");
+
+    let minChae = {name:"오 민채", role:"여주인공"};
+    let {role} = minChae;
+
+    alert("역할:"+role);    // minChae.role 글자수를 줄이려고
+
+    // NGROK? 무료 도메인 (1개만 무료로 쓸 수 있음)
+    
+
+</script>
