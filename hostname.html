@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)http://192.168.36.2:8272/jsstudy/hostname.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // hostname 동적으로 바꾸깅(주소표시줄에 오는 값으로)
+    // 얍삽이 변칙 테크닉!
+    var hostname = location.href.split("/")[2];
+    alert(hostname);
+    var webClientSocket = new WebSocket(`ws://${hostname}/alarm`);
+
+</script>    
+
+</body></html>

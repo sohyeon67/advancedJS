@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<script>
+    // AJAX 프로미스파이(프로미스화) 함수
+    const ajaxPromise = () => {
+        return new Promise((res, rej) => {
+            let xhr = new XMLHttpRequest();
+            xhr.open("get", "newJeans.json", true);  // 성공할 URL
+            //xhr.open("get", "newJeans1.json", true); //  실패할 URL
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    let recResult = JSON.parse(xhr.responseText); // 배열이니깡 JSON이얌
+                    res(recResult);  // 성공했어용, then 진행해 주삼
+                }
+            }
+            // 실패 처리(onloadend이벤트는 마지막에 무조건 발생, status값을 이용 에러처링)
+            xhr.onloadend = () => {
+                if (xhr.status != 200) {
+                    let myError = {    // 억지로 
+                        status: xhr.status,
+                        message: xhr.statusText
+                    };
+                    rej(myError);  // 실패했어용, catch 진행해 주삼
+                }
+            }
+            xhr.send();
+        })
+    }
+
+
+    // async 와 await는 꼭 세트롱, await는 Promise를 리턴하는 함수앞에 사용가능
+    // alert 뜨는 순서에 주목해 보장!
+    const fTest = async () => {
+        let rslt = await ajaxPromise();
+        alert("누가 먼저 뜰가용 E7E ?");
+        console.log("결과는:", rslt);
+    }
+    fTest();  // 함수 호출
+
+    alert("누가 먼저 뜰가용 금수저?");
+</script>
